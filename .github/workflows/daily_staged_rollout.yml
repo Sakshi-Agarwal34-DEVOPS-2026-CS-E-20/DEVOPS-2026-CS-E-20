@@ -1,0 +1,27 @@
+name: Daily Staged Rollout (10-Day Plan)
+
+on:
+  schedule:
+    # Runs daily at 04:30 UTC (10:00 AM IST)
+    - cron: '30 4 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  daily-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Daily Rollout
+        run: python .github/scripts/daily_rollout.py
