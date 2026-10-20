@@ -1,0 +1,886 @@
+[
+  {
+    "id": "prod-1",
+    "name": "Aura Studio Wireless ANC Headphones",
+    "tagline": "Immersive Spatial Audio with 45h Battery Life",
+    "category": "audio-tech",
+    "categoryName": "Audio & Tech",
+    "price": 249.99,
+    "originalPrice": 329.99,
+    "discount": 24,
+    "rating": 5,
+    "reviewCount": 3,
+    "badge": "Best Seller",
+    "badgeType": "hot",
+    "inStock": true,
+    "stockCount": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Matte Obsidian",
+        "hex": "#1e1e1e"
+      },
+      {
+        "name": "Titanium Silver",
+        "hex": "#d4d4d8"
+      },
+      {
+        "name": "Midnight Navy",
+        "hex": "#1e293b"
+      }
+    ],
+    "sizes": [],
+    "description": "Engineered for audio purists and daily commuters alike. Features hybrid active noise cancellation, custom 40mm beryllium drivers, and ultra-plush memory foam earcups.",
+    "specs": {
+      "Driver Size": "40mm Titanium Plated",
+      "Battery Life": "Up to 45 hours (ANC on)",
+      "Connectivity": "Bluetooth 5.3 + 3.5mm AUX",
+      "Weight": "255 grams",
+      "Charging": "USB-C Fast Charging (10m = 5h play)"
+    },
+    "reviews": [
+      {
+        "id": "rev-1790667861444",
+        "author": "Julian Vance",
+        "rating": 5,
+        "date": "Just now",
+        "comment": "Superb acoustic tuning and comfort.",
+        "createdAt": "2026-09-29T07:44:21.444Z"
+      },
+      {
+        "id": "rev-1",
+        "author": "Elena Vance",
+        "rating": 5,
+        "date": "2 days ago",
+        "comment": "The soundstage is astonishingly wide. Noise cancellation rivals high-end studio models!"
+      },
+      {
+        "id": "rev-2",
+        "author": "Marcus Chen",
+        "rating": 5,
+        "date": "1 week ago",
+        "comment": "Super comfortable for all-day coding sessions. Battery really does last the entire week."
+      }
+    ]
+  },
+  {
+    "id": "prod-2",
+    "name": "CyberGlow Mechanical Keyboard 75%",
+    "tagline": "Gasket-Mounted RGB Hotswappable Keyboard",
+    "category": "audio-tech",
+    "categoryName": "Audio & Tech",
+    "price": 139.99,
+    "originalPrice": 179.99,
+    "discount": 22,
+    "rating": 4.8,
+    "reviewCount": 98,
+    "badge": "Popular",
+    "badgeType": "trending",
+    "inStock": true,
+    "stockCount": 11,
+    "images": [
+      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Cyber Neon",
+        "hex": "#6366f1"
+      },
+      {
+        "name": "Stealth Black",
+        "hex": "#111827"
+      },
+      {
+        "name": "Retro Cream",
+        "hex": "#fef3c7"
+      }
+    ],
+    "sizes": [
+      "Linear Red",
+      "Tactile Brown",
+      "Clicky Blue"
+    ],
+    "description": "Precision typing experience tailored for enthusiasts. Multi-layer acoustic dampening, custom pre-lubed switches, and per-key customizable South-facing RGB backlighting.",
+    "specs": {
+      "Layout": "75% Compact (84 keys)",
+      "Switches": "Pre-lubricated Gateron Pro",
+      "Battery": "4000mAh wireless rechargeable",
+      "Connectivity": "Tri-mode (2.4G / BT 5.1 / Type-C)",
+      "Keycaps": "Double-shot PBT Cherry Profile"
+    },
+    "reviews": [
+      {
+        "id": "rev-3",
+        "author": "Devon K.",
+        "rating": 5,
+        "date": "3 days ago",
+        "comment": "The typing sound profile is deep and creamy right out of the box!"
+      }
+    ]
+  },
+  {
+    "id": "prod-3",
+    "name": "Pulse Pro Fitness & Health Smartwatch",
+    "tagline": "Sapphire Crystal Display with ECG & GPS",
+    "category": "accessories",
+    "categoryName": "Accessories",
+    "price": 199.99,
+    "originalPrice": 249.99,
+    "discount": 20,
+    "rating": 4.7,
+    "reviewCount": 84,
+    "badge": "New Drop",
+    "badgeType": "new",
+    "inStock": true,
+    "stockCount": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Space Gray",
+        "hex": "#374151"
+      },
+      {
+        "name": "Starlight Gold",
+        "hex": "#fef08a"
+      },
+      {
+        "name": "Alpine Green",
+        "hex": "#065f46"
+      }
+    ],
+    "sizes": [
+      "41mm",
+      "45mm"
+    ],
+    "description": "Stay ahead of your performance with continuous biometric health tracking, dual-frequency GPS route mapping, and 50m water resistance.",
+    "specs": {
+      "Display": "1.9\" AMOLED Always-On (1000 nits)",
+      "Sensors": "SpO2, Optical HR, ECG, Temperature",
+      "Water Resistance": "5 ATM / 50 meters",
+      "Battery": "Up to 7 days normal usage",
+      "Compatibility": "iOS and Android"
+    },
+    "reviews": [
+      {
+        "id": "rev-4",
+        "author": "Sophia Rossi",
+        "rating": 5,
+        "date": "5 days ago",
+        "comment": "Battery lasts nearly a full week and the screen is crystal clear under bright sunlight."
+      }
+    ]
+  },
+  {
+    "id": "prod-4",
+    "name": "Nomad Waterproof Rolltop Backpack 28L",
+    "tagline": "Weatherproof Urban Tech & Travel Pack",
+    "category": "accessories",
+    "categoryName": "Accessories",
+    "price": 119.99,
+    "originalPrice": 149.99,
+    "discount": 20,
+    "rating": 4.9,
+    "reviewCount": 112,
+    "badge": "Top Rated",
+    "badgeType": "hot",
+    "inStock": true,
+    "stockCount": 14,
+    "images": [
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Matte Charcoal",
+        "hex": "#1f2937"
+      },
+      {
+        "name": "Desert Dune",
+        "hex": "#d97706"
+      },
+      {
+        "name": "Forest Moss",
+        "hex": "#14532d"
+      }
+    ],
+    "sizes": [
+      "24L Standard",
+      "28L Pro Expandable"
+    ],
+    "description": "Crafted with 840D ballistic nylon and waterproof taped seams. Dedicated padded compartment fits up to 16\" laptops with quick-draw side access.",
+    "specs": {
+      "Volume": "28 Liters (expandable to 32L)",
+      "Material": "Recycled TPU-coated 840D Nylon",
+      "Laptop Sleeve": "Suspended protection up to 16\"",
+      "Zippers": "YKK Aquaguard weatherproof",
+      "Weight": "980 grams"
+    },
+    "reviews": [
+      {
+        "id": "rev-5",
+        "author": "Julian Ray",
+        "rating": 5,
+        "date": "2 weeks ago",
+        "comment": "Walked through a torrential downpour and my laptop stayed bone dry. Incredible build quality."
+      }
+    ]
+  },
+  {
+    "id": "prod-5",
+    "name": "Oversized Heavyweight Fleece Hoodie",
+    "tagline": "480 GSM French Terry Cotton Comfort",
+    "category": "apparel",
+    "categoryName": "Urban Apparel",
+    "price": 84.99,
+    "originalPrice": 110,
+    "discount": 23,
+    "rating": 4.8,
+    "reviewCount": 230,
+    "badge": "Trend Setter",
+    "badgeType": "trending",
+    "inStock": true,
+    "stockCount": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Vintage Washed Black",
+        "hex": "#27272a"
+      },
+      {
+        "name": "Oatmeal Heather",
+        "hex": "#e4e4e7"
+      },
+      {
+        "name": "Deep Clay",
+        "hex": "#7c2d12"
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "description": "Heavyweight warmth with relaxed drop-shoulder tailoring. Double-layered hood without drawstrings for a clean, minimalist silhouette.",
+    "specs": {
+      "Fabric": "100% Organic French Terry (480 GSM)",
+      "Fit": "Boxy / Oversized streetwear fit",
+      "Origin": "Ethically milled in Portugal",
+      "Care": "Machine wash cold, lay flat to dry"
+    },
+    "reviews": [
+      {
+        "id": "rev-6",
+        "author": "Tanya M.",
+        "rating": 5,
+        "date": "4 days ago",
+        "comment": "The weight of this fabric is unmatched. Fits perfectly boxy without feeling bulky."
+      }
+    ]
+  },
+  {
+    "id": "prod-6",
+    "name": "Minimalist Raw Denim Utility Jacket",
+    "tagline": "14oz Japanese Selvedge Cotton Chore Coat",
+    "category": "apparel",
+    "categoryName": "Urban Apparel",
+    "price": 159.99,
+    "originalPrice": 195,
+    "discount": 18,
+    "rating": 4.7,
+    "reviewCount": 64,
+    "badge": "Limited",
+    "badgeType": "hot",
+    "inStock": true,
+    "stockCount": 8,
+    "images": [
+      "https://images.unsplash.com/photo-1544441893-675973e31985?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Indigo Selvedge",
+        "hex": "#1e3a8a"
+      },
+      {
+        "name": "Raw Blackout",
+        "hex": "#0f172a"
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "description": "Timeless utility jacket crafted from authentic shuttle-loom woven denim. Features reinforced riveted stress points and custom copper hardware.",
+    "specs": {
+      "Weight": "14oz Kurabo Japanese Selvedge Denim",
+      "Pockets": "4 external drop pockets + 1 interior phone pocket",
+      "Hardware": "Antiqued custom engraved brass buttons",
+      "Cut": "Classic regular fit"
+    },
+    "reviews": [
+      {
+        "id": "rev-7",
+        "author": "Chris Parker",
+        "rating": 5,
+        "date": "1 week ago",
+        "comment": "The break-in process has produced stunning fades already. Lifetime piece."
+      }
+    ]
+  },
+  {
+    "id": "prod-7",
+    "name": "Aether Ambient Halo Smart Desk Lamp",
+    "tagline": "Circadian Rhythm Sync with Wireless Fast Charger Base",
+    "category": "smart-living",
+    "categoryName": "Smart Living",
+    "price": 89.99,
+    "originalPrice": 119.99,
+    "discount": 25,
+    "rating": 4.9,
+    "reviewCount": 175,
+    "badge": "Staff Pick",
+    "badgeType": "trending",
+    "inStock": true,
+    "stockCount": 22,
+    "images": [
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Anodized Silver",
+        "hex": "#9ca3af"
+      },
+      {
+        "name": "Space Black",
+        "hex": "#111827"
+      },
+      {
+        "name": "Rose Copper",
+        "hex": "#fb7185"
+      }
+    ],
+    "sizes": [],
+    "description": "Dynamic biophilic lighting system that adjusts color temperature automatically from warm amber (2200K) to crisp daylight (6500K). Integrated 15W Qi wireless charger base.",
+    "specs": {
+      "Luminance": "1200 Lumens (CRI > 97)",
+      "Color Temp": "2200K – 6500K Infinite Dial",
+      "Base Features": "15W Fast Qi Wireless Charging + 20W USB-C PD port",
+      "Smart Ecosystem": "Matter / Apple HomeKit / Google Assistant"
+    },
+    "reviews": [
+      {
+        "id": "rev-8",
+        "author": "Liam S.",
+        "rating": 5,
+        "date": "3 days ago",
+        "comment": "Eliminated eye fatigue during long night work shifts. The integrated phone charger keeps my desk clean."
+      }
+    ]
+  },
+  {
+    "id": "prod-8",
+    "name": "Nordic Ultrasonic Ceramic Aroma Diffuser",
+    "tagline": "Whisper-Quiet Mist with Warm Ambient Glow",
+    "category": "smart-living",
+    "categoryName": "Smart Living",
+    "price": 49.99,
+    "originalPrice": 65,
+    "discount": 23,
+    "rating": 4.6,
+    "reviewCount": 88,
+    "badge": "Popular",
+    "badgeType": "trending",
+    "inStock": true,
+    "stockCount": 19,
+    "images": [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Stone Terracotta",
+        "hex": "#ca8a04"
+      },
+      {
+        "name": "Slate Gray",
+        "hex": "#475569"
+      },
+      {
+        "name": "Pure Chalk",
+        "hex": "#f8fafc"
+      }
+    ],
+    "sizes": [
+      "300ml",
+      "500ml Grand"
+    ],
+    "description": "Handcrafted stoneware ceramic cover with high-frequency ultrasonic vibrations that disperse pure essential oil fragrances over up to 500 sq ft.",
+    "specs": {
+      "Capacity": "300ml (Runs up to 10 hours continuous)",
+      "Noise Level": "< 20dB Ultra-quiet",
+      "Auto-Off": "Automatic dry shut-off safety switch",
+      "Coverage": "500 sq ft room size"
+    },
+    "reviews": [
+      {
+        "id": "rev-9",
+        "author": "Hannah B.",
+        "rating": 5,
+        "date": "6 days ago",
+        "comment": "Looks like an art piece on my coffee table. Scents the entire living room in minutes."
+      }
+    ]
+  },
+  {
+    "id": "prod-9",
+    "name": "Solstice Polarized Titanium Sunglasses",
+    "tagline": "Ultra-Lightweight Frame with UV400 Japanese Lenses",
+    "category": "accessories",
+    "categoryName": "Accessories",
+    "price": 129.99,
+    "originalPrice": 165,
+    "discount": 21,
+    "rating": 4.8,
+    "reviewCount": 52,
+    "badge": "Summer Drop",
+    "badgeType": "new",
+    "inStock": true,
+    "stockCount": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1577803645773-f96470509666?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Gunmetal Smoke",
+        "hex": "#334155"
+      },
+      {
+        "name": "Champagne Gold",
+        "hex": "#eab308"
+      },
+      {
+        "name": "Tortoise Bronze",
+        "hex": "#78350f"
+      }
+    ],
+    "sizes": [
+      "Standard 52mm",
+      "Wide 55mm"
+    ],
+    "description": "Aerospace-grade Japanese titanium frame weighing under 18 grams. Scratch-resistant TAC polarized lenses with anti-reflective back-coating.",
+    "specs": {
+      "Frame": "100% Japanese Beta-Titanium",
+      "Lenses": "Polarized TAC UV400 Grade",
+      "Weight": "17.8 grams",
+      "Includes": "Hard leather case + microfiber cloth"
+    },
+    "reviews": [
+      {
+        "id": "rev-10",
+        "author": "David L.",
+        "rating": 5,
+        "date": "2 weeks ago",
+        "comment": "You forget you are even wearing them. The clarity in bright sunlight is pristine."
+      }
+    ]
+  },
+  {
+    "id": "prod-10",
+    "name": "Vortex Hi-Res Portable Bluetooth Speaker",
+    "tagline": "360° Omnidirectional Sound with IPX7 Submersible Rating",
+    "category": "audio-tech",
+    "categoryName": "Audio & Tech",
+    "price": 99.99,
+    "originalPrice": 129.99,
+    "discount": 23,
+    "rating": 4.9,
+    "reviewCount": 210,
+    "badge": "Best Seller",
+    "badgeType": "hot",
+    "inStock": true,
+    "stockCount": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1589003077984-894e133dabab?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Midnight Black",
+        "hex": "#09090b"
+      },
+      {
+        "name": "Pacific Cyan",
+        "hex": "#06b6d4"
+      },
+      {
+        "name": "Blaze Orange",
+        "hex": "#f97316"
+      }
+    ],
+    "sizes": [],
+    "description": "Powerful 30W output with dual passive radiators delivering punchy, deep bass. 24-hour battery and rugged drop-proof silicone casing.",
+    "specs": {
+      "Output": "30W RMS Dual Neodymium Drivers",
+      "Battery": "24 hours continuous playback",
+      "Waterproof": "IP67 dustproof and waterproof (submersible)",
+      "Pairing": "True Wireless Stereo (link 2 speakers)"
+    },
+    "reviews": [
+      {
+        "id": "rev-11",
+        "author": "Rachel W.",
+        "rating": 5,
+        "date": "1 day ago",
+        "comment": "Remarkable bass for such a compact speaker. We took it on a 3-day camping trip without recharging once!"
+      }
+    ]
+  },
+  {
+    "id": "prod-11",
+    "name": "Aerolite Performance Trail Sneakers",
+    "tagline": "Responsive Carbon-Infused Cushioning & Grip",
+    "category": "apparel",
+    "categoryName": "Urban Apparel",
+    "price": 145,
+    "originalPrice": 180,
+    "discount": 19,
+    "rating": 4.8,
+    "reviewCount": 139,
+    "badge": "Popular",
+    "badgeType": "trending",
+    "inStock": true,
+    "stockCount": 16,
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Crimson Surge",
+        "hex": "#dc2626"
+      },
+      {
+        "name": "Stealth Shadow",
+        "hex": "#18181b"
+      },
+      {
+        "name": "Alpine Glacier",
+        "hex": "#38bdf8"
+      }
+    ],
+    "sizes": [
+      "US 8",
+      "US 9",
+      "US 10",
+      "US 11",
+      "US 12"
+    ],
+    "description": "Engineered for street agility and rugged off-road traction. Breathable engineered mesh upper paired with Vibram® Megagrip lugged outsoles.",
+    "specs": {
+      "Drop": "6mm heel-to-toe drop",
+      "Outsole": "Vibram® Megagrip rubber compound",
+      "Midsole": "Nitrogen-infused hyper-foam",
+      "Weight": "270g per shoe (US 9)"
+    },
+    "reviews": [
+      {
+        "id": "rev-12",
+        "author": "Nate Cole",
+        "rating": 5,
+        "date": "5 days ago",
+        "comment": "Extremely comfortable for both daily city walks and weekend mountain trails."
+      }
+    ]
+  },
+  {
+    "id": "prod-12",
+    "name": "Terra Precision Stainless Pour-Over Kettle",
+    "tagline": "Gooseneck Spout with Digital PID Temperature Control",
+    "category": "smart-living",
+    "categoryName": "Smart Living",
+    "price": 110,
+    "originalPrice": 135,
+    "discount": 19,
+    "rating": 4.9,
+    "reviewCount": 94,
+    "badge": "Top Rated",
+    "badgeType": "hot",
+    "inStock": true,
+    "stockCount": 11,
+    "images": [
+      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1520970014086-2208d157c9e2?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Matte Onyx",
+        "hex": "#171717"
+      },
+      {
+        "name": "Brushed Steel",
+        "hex": "#9ca3af"
+      },
+      {
+        "name": "Sage Green",
+        "hex": "#3f6212"
+      }
+    ],
+    "sizes": [
+      "0.9 Liters"
+    ],
+    "description": "Achieve the perfect extraction every morning. Counterbalanced ergonomic handle, precision pour spout, and 60-minute temperature hold mode.",
+    "specs": {
+      "Power": "1200W Rapid boil element",
+      "Temp Range": "104°F – 212°F (40°C – 100°C)",
+      "Material": "Food-grade 304 Stainless Steel",
+      "Features": "Integrated brew stopwatch display"
+    },
+    "reviews": [
+      {
+        "id": "rev-13",
+        "author": "Barista Sam",
+        "rating": 5,
+        "date": "1 week ago",
+        "comment": "Unrivaled pour flow control. The PID temp accuracy is spot on down to 1 degree."
+      }
+    ]
+  },
+  {
+    "id": "prod-13",
+    "name": "Quantum Ergonomic Carbon Mesh Chair",
+    "tagline": "Dynamic Lumbar Tracking & 4D Armrests",
+    "category": "smart-living",
+    "categoryName": "Smart Living",
+    "price": 349.99,
+    "originalPrice": 449.99,
+    "discount": 22,
+    "rating": 4.9,
+    "reviewCount": 167,
+    "badge": "Editor Choice",
+    "badgeType": "hot",
+    "inStock": true,
+    "stockCount": 7,
+    "images": [
+      "https://images.unsplash.com/photo-1580481077195-c228c388789f?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1505797149-43b0069ec26b?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Carbon Black",
+        "hex": "#18181b"
+      },
+      {
+        "name": "Glacier Gray",
+        "hex": "#71717a"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "High-Back Plus"
+    ],
+    "description": "Designed for 12+ hours of posture support. Self-adjusting responsive lumbar mechanism and ultra-breathable Italian mesh weave.",
+    "specs": {
+      "Weight Capacity": "330 lbs (150 kg)",
+      "Mechanism": "Synchronous tilt with 4 lock positions",
+      "Gas Lift": "Class 4 heavy-duty pneumatic cylinder",
+      "Warranty": "10-year manufacturer warranty"
+    },
+    "reviews": [
+      {
+        "id": "rev-14",
+        "author": "Victor M.",
+        "rating": 5,
+        "date": "3 days ago",
+        "comment": "Cured my lower back ache within the first 3 days. Worth every penny for home office!"
+      }
+    ]
+  },
+  {
+    "id": "prod-14",
+    "name": "Merino Wool Minimalist Crew Knit",
+    "tagline": "100% Extra-Fine Australian Merino Thermal Knit",
+    "category": "apparel",
+    "categoryName": "Urban Apparel",
+    "price": 95,
+    "originalPrice": 120,
+    "discount": 21,
+    "rating": 4.7,
+    "reviewCount": 45,
+    "badge": "New",
+    "badgeType": "new",
+    "inStock": true,
+    "stockCount": 14,
+    "images": [
+      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Sandstone Beige",
+        "hex": "#d6d3d1"
+      },
+      {
+        "name": "Navy Blue",
+        "hex": "#1e3a8a"
+      },
+      {
+        "name": "Olive Forest",
+        "hex": "#365314"
+      }
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "description": "Naturally temperature regulating, odor resistant, and ultra-soft against bare skin. Tailored ribbing on cuffs and hem.",
+    "specs": {
+      "Fiber": "19.5 Micron Extra-Fine Merino Wool",
+      "Gauge": "12-gauge single jersey knit",
+      "Weight": "Lightweight thermal layer (260g)",
+      "Care": "Hand wash or wool cycle"
+    },
+    "reviews": [
+      {
+        "id": "rev-15",
+        "author": "Claire F.",
+        "rating": 5,
+        "date": "1 week ago",
+        "comment": "Incredibly soft and zero itch. Looks sharp under a blazer or with jeans."
+      }
+    ]
+  },
+  {
+    "id": "prod-15",
+    "name": "Echo Pods Pro Spatial Earbuds",
+    "tagline": "Adaptive Transparence & Studio Audio Fidelity",
+    "category": "audio-tech",
+    "categoryName": "Audio & Tech",
+    "price": 169.99,
+    "originalPrice": 199.99,
+    "discount": 15,
+    "rating": 4.8,
+    "reviewCount": 182,
+    "badge": "Trending",
+    "badgeType": "trending",
+    "inStock": true,
+    "stockCount": 28,
+    "images": [
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Ceramic White",
+        "hex": "#f4f4f5"
+      },
+      {
+        "name": "Matte Graphite",
+        "hex": "#27272a"
+      }
+    ],
+    "sizes": [
+      "Includes S, M, L, XL tips"
+    ],
+    "description": "Immersive dynamic head-tracking spatial audio with personalized volume EQ and wind-reduction microphones for crystal-clear calls.",
+    "specs": {
+      "Battery": "8h earbud / 32h with wireless charging case",
+      "Waterproof": "IPX5 sweat & water resistant",
+      "Codecs": "LDAC, AAC, aptX Adaptive",
+      "Charging": "Wireless Qi + Fast USB-C"
+    },
+    "reviews": [
+      {
+        "id": "rev-16",
+        "author": "Ethan Hunt",
+        "rating": 5,
+        "date": "4 days ago",
+        "comment": "The transparency mode feels like you are wearing nothing at all. Super comfortable."
+      }
+    ]
+  },
+  {
+    "id": "prod-16",
+    "name": "Artisan Full-Grain Leather Bi-Fold Wallet",
+    "tagline": "RFID-Shielded Slim Vegetable-Tanned Italian Leather",
+    "category": "accessories",
+    "categoryName": "Accessories",
+    "price": 55,
+    "originalPrice": 75,
+    "discount": 27,
+    "rating": 4.9,
+    "reviewCount": 119,
+    "badge": "Best Seller",
+    "badgeType": "hot",
+    "inStock": true,
+    "stockCount": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=800&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&auto=format&fit=crop&q=80"
+    ],
+    "colors": [
+      {
+        "name": "Cognac Brown",
+        "hex": "#9a3412"
+      },
+      {
+        "name": "Obsidian Black",
+        "hex": "#18181b"
+      },
+      {
+        "name": "Vintage Olive",
+        "hex": "#3f6212"
+      }
+    ],
+    "sizes": [],
+    "description": "Hand-burnished edges and saddle stitching. Holds up to 10 cards and flat cash without unnecessary bulk in your front pocket.",
+    "specs": {
+      "Leather": "Vegetable-tanned Tuscan full-grain leather",
+      "Security": "Built-in 13.56 MHz RFID blocking layer",
+      "Capacity": "8-10 cards + billfold slot + quick pull tab",
+      "Dimensions": "4.1\" x 3.0\" x 0.35\""
+    },
+    "reviews": [
+      {
+        "id": "rev-17",
+        "author": "Adam K.",
+        "rating": 5,
+        "date": "2 weeks ago",
+        "comment": "The leather smells incredible and patinas beautifully over time."
+      }
+    ]
+  }
+]

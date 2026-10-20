@@ -1,0 +1,12 @@
+[
+  {
+    "email": "alex.morgan@example.com",
+    "subscribedAt": "2026-09-28T10:00:00.000Z",
+    "couponAwarded": "WELCOME15"
+  },
+  {
+    "email": "team.lumen@example.com",
+    "subscribedAt": "2026-09-29T07:46:31.789Z",
+    "couponAwarded": "WELCOME15"
+  }
+]

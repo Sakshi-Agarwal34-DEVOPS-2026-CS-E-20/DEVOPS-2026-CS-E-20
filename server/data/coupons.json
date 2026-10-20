@@ -1,0 +1,37 @@
+{
+  "SAVE20": {
+    "code": "SAVE20",
+    "discountPercent": 20,
+    "description": "20% off entire order",
+    "minSpend": 50,
+    "active": true
+  },
+  "LUMEN10": {
+    "code": "LUMEN10",
+    "discountPercent": 10,
+    "description": "10% off entire order",
+    "minSpend": 0,
+    "active": true
+  },
+  "WELCOME15": {
+    "code": "WELCOME15",
+    "discountPercent": 15,
+    "description": "15% welcome discount",
+    "minSpend": 0,
+    "active": true
+  },
+  "FREESHIP50": {
+    "code": "FREESHIP50",
+    "discountAmount": 15,
+    "description": "$15 off shipping or entire order",
+    "minSpend": 50,
+    "active": true
+  },
+  "VIP25": {
+    "code": "VIP25",
+    "discountPercent": 25,
+    "description": "25% exclusive VIP member discount",
+    "minSpend": 100,
+    "active": true
+  }
+}
