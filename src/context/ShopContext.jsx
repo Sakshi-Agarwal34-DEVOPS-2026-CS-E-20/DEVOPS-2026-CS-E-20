@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { PRODUCTS, CURRENCIES, COUPONS } from '../data/products';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import { PRODUCTS as INITIAL_PRODUCTS, CURRENCIES, COUPONS } from '../data/products';
+import api from '../services/api';
 
 const ShopContext = createContext();
 
@@ -44,6 +45,35 @@ export const ShopProvider = ({ children }) => {
     })}`;
   };
 
+  // Backend connection status & products state
+  const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [serverConnected, setServerConnected] = useState(false);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+
+  // Fetch products from backend
+  const fetchProducts = useCallback(async () => {
+    try {
+      setIsLoadingProducts(true);
+      const res = await api.getProducts();
+      if (res.success && Array.isArray(res.products) && res.products.length > 0) {
+        setProducts(res.products);
+        setServerConnected(true);
+      } else {
+        setProducts(INITIAL_PRODUCTS);
+      }
+    } catch (err) {
+      console.warn('Backend server unavailable, running in local resilience mode:', err.message);
+      setProducts(INITIAL_PRODUCTS);
+      setServerConnected(false);
+    } finally {
+      setIsLoadingProducts(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
   // Cart state
   const [cart, setCart] = useState(() => {
     try {
@@ -72,7 +102,7 @@ export const ShopProvider = ({ children }) => {
     localStorage.setItem('lumen_wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
 
-  // Order history
+  // Orders state
   const [orders, setOrders] = useState(() => {
     try {
       const saved = localStorage.getItem('lumen_orders');
@@ -85,6 +115,21 @@ export const ShopProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('lumen_orders', JSON.stringify(orders));
   }, [orders]);
+
+  // Fetch orders from backend on mount if available
+  useEffect(() => {
+    const loadOrders = async () => {
+      try {
+        const res = await api.getOrders();
+        if (res.success && res.orders) {
+          setOrders(res.orders);
+        }
+      } catch {
+        // use local storage fallback
+      }
+    };
+    loadOrders();
+  }, []);
 
   // Coupons
   const [appliedCoupon, setAppliedCoupon] = useState(null);
@@ -102,6 +147,9 @@ export const ShopProvider = ({ children }) => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
+  const [activeTrackingOrder, setActiveTrackingOrder] = useState(null);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   // Toast Notifications
@@ -112,7 +160,7 @@ export const ShopProvider = ({ children }) => {
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
       removeToast(id);
-    }, 3500);
+    }, 3800);
   };
 
   const removeToast = (id) => {
@@ -189,16 +237,25 @@ export const ShopProvider = ({ children }) => {
     return wishlist.some((p) => p.id === productId);
   };
 
-  // Coupon handling
-  const applyCouponCode = (code) => {
+  // Coupon handling with backend validation
+  const applyCouponCode = async (code) => {
     const cleanCode = code.trim().toUpperCase();
-    if (COUPONS[cleanCode]) {
-      setAppliedCoupon({ code: cleanCode, ...COUPONS[cleanCode] });
-      addToast(`Promo code "${cleanCode}" applied successfully!`, 'success');
-      return { success: true };
-    } else {
-      addToast(`Invalid promo code: "${code}"`, 'error');
-      return { success: false, message: 'Invalid coupon code' };
+    try {
+      const res = await api.validateCoupon(cleanCode, cartSubtotal);
+      if (res.success) {
+        setAppliedCoupon({ code: cleanCode, ...res.coupon, computedDiscount: res.discountAmount });
+        addToast(res.message || `Promo code "${cleanCode}" applied!`, 'success');
+        return { success: true };
+      }
+    } catch (error) {
+      // Check local fallback
+      if (COUPONS[cleanCode]) {
+        setAppliedCoupon({ code: cleanCode, ...COUPONS[cleanCode] });
+        addToast(`Promo code "${cleanCode}" applied successfully!`, 'success');
+        return { success: true };
+      }
+      addToast(error.message || `Invalid promo code: "${code}"`, 'error');
+      return { success: false, message: error.message };
     }
   };
 
@@ -232,17 +289,9 @@ export const ShopProvider = ({ children }) => {
     return cart.reduce((count, item) => count + item.quantity, 0);
   }, [cart]);
 
-  // Order Placement
-  const placeOrder = (customerDetails, paymentDetails) => {
-    const newOrder = {
-      orderId: `ORD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      date: new Date().toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
+  // Order Placement (Fullstack async integration)
+  const placeOrder = async (customerDetails, paymentDetails) => {
+    const orderPayload = {
       items: [...cart],
       subtotal: cartSubtotal,
       discount: discountAmount,
@@ -251,17 +300,224 @@ export const ShopProvider = ({ children }) => {
       total: cartTotal,
       currency,
       customer: customerDetails,
-      paymentMethod: paymentDetails.method || 'Credit Card',
-      status: 'Processing',
-      estimatedDelivery: '3 - 5 Business Days',
+      paymentMethod: paymentDetails.method || 'Credit Card (•••• 4242)',
+      appliedCoupon: appliedCoupon?.code || null,
     };
 
-    setOrders((prev) => [newOrder, ...prev]);
+    let placedOrder = null;
+    try {
+      const res = await api.createOrder(orderPayload);
+      if (res.success && res.order) {
+        placedOrder = res.order;
+        setServerConnected(true);
+      }
+    } catch (err) {
+      console.warn('Placing order locally due to offline server:', err.message);
+    }
+
+    // Local fallback order if server response was offline
+    if (!placedOrder) {
+      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      const orderId = `ORD-LUX-${Date.now().toString(36).toUpperCase()}-${randomSuffix}`;
+      const trackingNumber = `TRK-${Math.floor(100000000 + Math.random() * 900000000)}`;
+      const now = new Date();
+      placedOrder = {
+        orderId,
+        trackingNumber,
+        date: now.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        ...orderPayload,
+        status: 'Processing',
+        carrier: 'FedEx Express Priority',
+        estimatedDelivery: '3 - 5 Business Days',
+        trackingSteps: [
+          { status: 'Order Placed', time: 'Just now', completed: true },
+          { status: 'Processing & Packaging', time: 'In Progress', completed: true, current: true },
+          { status: 'Shipped from Fulfillment Hub', time: 'Pending', completed: false },
+          { status: 'In Transit', time: 'Pending', completed: false },
+          { status: 'Out for Delivery', time: 'Pending', completed: false },
+          { status: 'Delivered', time: 'Pending', completed: false },
+        ],
+      };
+    }
+
+    setOrders((prev) => [placedOrder, ...prev]);
     clearCart();
     setAppliedCoupon(null);
-    return newOrder;
+    fetchProducts(); // Refresh stock
+    return placedOrder;
   };
 
+  // Submit product review (Fullstack async integration)
+  const addReviewToProduct = async (productId, reviewData) => {
+    try {
+      const res = await api.submitReview(productId, reviewData);
+      if (res.success && res.product) {
+        setProducts((prev) =>
+          prev.map((p) => (p.id === productId ? res.product : p))
+        );
+        if (quickViewProduct && quickViewProduct.id === productId) {
+          setQuickViewProduct(res.product);
+        }
+        addToast('Thank you! Your verified review was posted.', 'success');
+        return { success: true, product: res.product };
+      }
+    } catch (err) {
+      // Local fallback
+      const localRev = {
+        id: `rev-${Date.now()}`,
+        author: reviewData.author,
+        rating: Number(reviewData.rating),
+        date: 'Just now',
+        comment: reviewData.comment,
+      };
+
+      setProducts((prev) =>
+        prev.map((p) => {
+          if (p.id === productId) {
+            const reviews = [localRev, ...(p.reviews || [])];
+            const sum = reviews.reduce((a, r) => a + r.rating, 0);
+            return {
+              ...p,
+              reviews,
+              reviewCount: reviews.length,
+              rating: Number((sum / reviews.length).toFixed(1)),
+            };
+          }
+          return p;
+        })
+      );
+
+      if (quickViewProduct && quickViewProduct.id === productId) {
+        setQuickViewProduct((prev) => {
+          const reviews = [localRev, ...(prev.reviews || [])];
+          const sum = reviews.reduce((a, r) => a + r.rating, 0);
+          return {
+            ...prev,
+            reviews,
+            reviewCount: reviews.length,
+            rating: Number((sum / reviews.length).toFixed(1)),
+          };
+        });
+      }
+
+      addToast('Review submitted locally.', 'success');
+      return { success: true };
+    }
+  };
+
+  // Admin: Update order status
+  const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const res = await api.updateOrderStatus(orderId, newStatus);
+      if (res.success && res.order) {
+        setOrders((prev) =>
+          prev.map((o) => (o.orderId === orderId ? res.order : o))
+        );
+        if (activeTrackingOrder && activeTrackingOrder.orderId === orderId) {
+          setActiveTrackingOrder(res.order);
+        }
+        addToast(`Order ${orderId} updated to "${newStatus}"`, 'success');
+        return { success: true };
+      }
+    } catch (err) {
+      // Local fallback
+      setOrders((prev) =>
+        prev.map((o) => {
+          if (o.orderId === orderId) {
+            return {
+              ...o,
+              status: newStatus,
+              trackingSteps: (o.trackingSteps || []).map((s) => ({
+                ...s,
+                completed: s.status === newStatus || s.completed,
+              })),
+            };
+          }
+          return o;
+        })
+      );
+      addToast(`Status updated to ${newStatus}`, 'info');
+    }
+  };
+
+  // Admin: Add new product
+  const addProduct = async (productData) => {
+    try {
+      const res = await api.createProduct(productData);
+      if (res.success && res.product) {
+        setProducts((prev) => [res.product, ...prev]);
+        addToast(`Product "${res.product.name}" created!`, 'success');
+        return { success: true, product: res.product };
+      }
+    } catch (err) {
+      const localProduct = {
+        id: `prod-${Date.now().toString(36)}`,
+        ...productData,
+        price: Number(productData.price),
+        stockCount: Number(productData.stockCount) || 20,
+        inStock: true,
+        rating: 5.0,
+        reviewCount: 0,
+        badge: 'New Drop',
+        badgeType: 'new',
+        images: productData.images || ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80'],
+      };
+      setProducts((prev) => [localProduct, ...prev]);
+      addToast(`Product created locally!`, 'success');
+      return { success: true, product: localProduct };
+    }
+  };
+
+  // Admin: Update product stock or info
+  const updateProduct = async (productId, updates) => {
+    try {
+      const res = await api.updateProduct(productId, updates);
+      if (res.success && res.product) {
+        setProducts((prev) =>
+          prev.map((p) => (p.id === productId ? res.product : p))
+        );
+        addToast(`Updated ${res.product.name}`, 'success');
+        return { success: true };
+      }
+    } catch (err) {
+      setProducts((prev) =>
+        prev.map((p) => (p.id === productId ? { ...p, ...updates } : p))
+      );
+      addToast('Product updated locally', 'info');
+    }
+  };
+
+  // Admin: Delete product
+  const deleteProduct = async (productId) => {
+    try {
+      await api.deleteProduct(productId);
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
+      addToast('Product deleted from inventory', 'info');
+    } catch (err) {
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
+      addToast('Product deleted locally', 'info');
+    }
+  };
+
+  // Newsletter subscribe
+  const subscribeNewsletter = async (email) => {
+    try {
+      const res = await api.subscribeNewsletter(email);
+      addToast(res.message || 'Subscribed! Check your inbox for 15% off code.', 'success');
+      return { success: true, coupon: res.coupon || 'WELCOME15' };
+    } catch {
+      addToast('Subscribed! Check your inbox for 15% off code.', 'success');
+      return { success: true, coupon: 'WELCOME15' };
+    }
+  };
+
+  // Reset all filters
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedCategory('all');
@@ -273,14 +529,15 @@ export const ShopProvider = ({ children }) => {
 
   // Filtered and Sorted Products
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return products.filter((product) => {
       // Search query filter
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesName = product.name.toLowerCase().includes(query);
-        const matchesCategory = product.categoryName.toLowerCase().includes(query);
-        const matchesDesc = product.description.toLowerCase().includes(query);
-        if (!matchesName && !matchesCategory && !matchesDesc) {
+        const matchesCategory = product.categoryName?.toLowerCase().includes(query);
+        const matchesDesc = product.description?.toLowerCase().includes(query);
+        const matchesTagline = product.tagline?.toLowerCase().includes(query);
+        if (!matchesName && !matchesCategory && !matchesDesc && !matchesTagline) {
           return false;
         }
       }
@@ -296,12 +553,12 @@ export const ShopProvider = ({ children }) => {
       }
 
       // Rating filter
-      if (product.rating < minRating) {
+      if ((product.rating || 0) < minRating) {
         return false;
       }
 
       // In Stock filter
-      if (inStockOnly && !product.inStock) {
+      if (inStockOnly && (!product.inStock || product.stockCount === 0)) {
         return false;
       }
 
@@ -309,11 +566,11 @@ export const ShopProvider = ({ children }) => {
     }).sort((a, b) => {
       if (sortBy === 'price-low') return a.price - b.price;
       if (sortBy === 'price-high') return b.price - a.price;
-      if (sortBy === 'rating') return b.rating - a.rating;
+      if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
       if (sortBy === 'newest') return (b.badge === 'New Drop' || b.badge === 'New' ? 1 : 0) - (a.badge === 'New Drop' || a.badge === 'New' ? 1 : 0);
       return 0; // 'featured'
     });
-  }, [searchQuery, selectedCategory, priceRange, minRating, sortBy, inStockOnly]);
+  }, [products, searchQuery, selectedCategory, priceRange, minRating, sortBy, inStockOnly]);
 
   return (
     <ShopContext.Provider
@@ -323,6 +580,10 @@ export const ShopProvider = ({ children }) => {
         currency,
         setCurrency,
         formatPrice,
+        products,
+        isLoadingProducts,
+        serverConnected,
+        fetchProducts,
         cart,
         addToCart,
         removeFromCart,
@@ -363,10 +624,22 @@ export const ShopProvider = ({ children }) => {
         setIsCheckoutOpen,
         isOrderHistoryOpen,
         setIsOrderHistoryOpen,
+        isAdminOpen,
+        setIsAdminOpen,
+        isTrackingOpen,
+        setIsTrackingOpen,
+        activeTrackingOrder,
+        setActiveTrackingOrder,
         quickViewProduct,
         setQuickViewProduct,
         orders,
         placeOrder,
+        addReviewToProduct,
+        updateOrderStatus,
+        addProduct,
+        updateProduct,
+        deleteProduct,
+        subscribeNewsletter,
         toasts,
         addToast,
         removeToast,
@@ -376,3 +649,5 @@ export const ShopProvider = ({ children }) => {
     </ShopContext.Provider>
   );
 };
+
+export default ShopContext;

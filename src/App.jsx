@@ -12,6 +12,8 @@ import { CartDrawer } from './components/CartDrawer';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
+import { AdminModal } from './components/AdminModal';
+import { OrderTrackingModal } from './components/OrderTrackingModal';
 import { ToastContainer } from './components/ToastContainer';
 import { Footer } from './components/Footer';
 import { ArrowUpDown, SlidersHorizontal, Sparkles, XCircle } from 'lucide-react';
@@ -155,6 +157,8 @@ export default function App() {
         <WishlistDrawer />
         <CheckoutModal />
         <OrderHistoryModal />
+        <OrderTrackingModal />
+        <AdminModal />
         <ToastContainer />
 
         {/* Footer */}

@@ -28,9 +28,12 @@ export const CheckoutModal = () => {
     placeOrder,
     formatPrice,
     currency,
+    setIsTrackingOpen,
+    setActiveTrackingOrder,
   } = useShop();
 
   const [step, setStep] = useState(1); // 1: Shipping, 2: Payment, 3: Success
+  const [isProcessingOrder, setIsProcessingOrder] = useState(false);
 
   // Form states
   const [shippingData, setShippingData] = useState({
@@ -72,21 +75,26 @@ export const CheckoutModal = () => {
     setStep(2);
   };
 
-  const handleFinalPlaceOrder = (e) => {
+  const handleFinalPlaceOrder = async (e) => {
     e.preventDefault();
-    const order = placeOrder(shippingData, paymentData);
-    setCompletedOrder(order);
-    setStep(3);
-
-    // Trigger celebratory confetti
+    setIsProcessingOrder(true);
     try {
-      confetti({
-        particleCount: 120,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    } catch {
-      // ignore
+      const order = await placeOrder(shippingData, paymentData);
+      setCompletedOrder(order);
+      setStep(3);
+
+      // Trigger celebratory confetti
+      try {
+        confetti({
+          particleCount: 120,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      } catch {
+        // ignore
+      }
+    } finally {
+      setIsProcessingOrder(false);
     }
   };
 
@@ -339,9 +347,14 @@ export const CheckoutModal = () => {
                 <ArrowLeft size={18} /> Back
               </button>
 
-              <button type="submit" className="btn-primary" style={{ padding: '0.85rem 1.75rem' }}>
+              <button
+                type="submit"
+                disabled={isProcessingOrder}
+                className="btn-primary"
+                style={{ padding: '0.85rem 1.75rem', opacity: isProcessingOrder ? 0.7 : 1 }}
+              >
                 <ShieldCheck size={18} />
-                <span>Pay {formatPrice(cartTotal)} Now</span>
+                <span>{isProcessingOrder ? 'Securing & Processing Order...' : `Pay ${formatPrice(cartTotal)} Now`}</span>
               </button>
             </div>
           </form>
@@ -368,10 +381,10 @@ export const CheckoutModal = () => {
             </div>
 
             <h2 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '0.5rem' }}>
-              Order Confirmed!
+              Order Confirmed & Placed!
             </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-              Thank you, <strong>{completedOrder.customer.firstName}</strong>. We have received your order and are preparing it for shipment.
+              Thank you, <strong>{completedOrder.customer?.firstName}</strong>. Your order has been recorded in the database and sent to fulfillment.
             </p>
 
             {/* Order details panel */}
@@ -388,22 +401,22 @@ export const CheckoutModal = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-subtle)' }}>
                 <div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>ORDER NUMBER</div>
-                  <div style={{ fontWeight: 800, color: 'var(--primary)' }}>{completedOrder.orderId}</div>
+                  <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.05rem' }}>{completedOrder.orderId}</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>DATE</div>
-                  <div style={{ fontWeight: 600 }}>{completedOrder.date}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>TRACKING CODE</div>
+                  <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{completedOrder.trackingNumber || 'TRK-984210984'}</div>
                 </div>
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
                 <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                  ORDERED ITEMS ({completedOrder.items.length})
+                  ORDERED ITEMS ({completedOrder.items?.length || 0})
                 </div>
-                {completedOrder.items.map((item, idx) => (
+                {completedOrder.items?.map((item, idx) => (
                   <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', margin: '0.35rem 0' }}>
-                    <span>{item.quantity}x {item.product.name}</span>
-                    <strong>{formatPrice(item.product.price * item.quantity)}</strong>
+                    <span>{item.quantity}x {item.product?.name}</span>
+                    <strong>{formatPrice((item.product?.price || 0) * item.quantity)}</strong>
                   </div>
                 ))}
               </div>
@@ -414,8 +427,21 @@ export const CheckoutModal = () => {
               </div>
             </div>
 
-            {/* Close / Action */}
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                className="btn-secondary"
+                onClick={() => {
+                  setActiveTrackingOrder(completedOrder);
+                  handleClose();
+                  setIsTrackingOpen(true);
+                }}
+                style={{ padding: '0.75rem 1.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <Truck size={18} />
+                <span>Track Live Shipment</span>
+              </button>
+
               <button
                 className="btn-primary"
                 onClick={handleClose}

@@ -22,6 +22,7 @@ export const ProductDetailModal = () => {
     isInWishlist,
     formatPrice,
     addToast,
+    addReviewToProduct,
   } = useShop();
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -35,6 +36,7 @@ export const ProductDetailModal = () => {
   const [newReviewComment, setNewReviewComment] = useState('');
   const [newReviewRating, setNewReviewRating] = useState(5);
   const [reviewsList, setReviewsList] = useState([]);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   useEffect(() => {
     if (quickViewProduct) {
@@ -63,25 +65,35 @@ export const ProductDetailModal = () => {
     setQuickViewProduct(null);
   };
 
-  const handleAddReview = (e) => {
+  const handleAddReview = async (e) => {
     e.preventDefault();
     if (!newReviewAuthor.trim() || !newReviewComment.trim()) {
       addToast('Please fill out all review fields', 'error');
       return;
     }
 
-    const newRev = {
-      id: `rev-${Date.now()}`,
-      author: newReviewAuthor.trim(),
-      rating: Number(newReviewRating),
-      date: 'Just now',
-      comment: newReviewComment.trim(),
-    };
-
-    setReviewsList((prev) => [newRev, ...prev]);
-    setNewReviewAuthor('');
-    setNewReviewComment('');
-    addToast('Thank you! Your verified review was posted.', 'success');
+    setIsSubmittingReview(true);
+    try {
+      await addReviewToProduct(quickViewProduct.id, {
+        author: newReviewAuthor.trim(),
+        rating: Number(newReviewRating),
+        comment: newReviewComment.trim(),
+      });
+      setReviewsList((prev) => [
+        {
+          id: `rev-${Date.now()}`,
+          author: newReviewAuthor.trim(),
+          rating: Number(newReviewRating),
+          date: 'Just now',
+          comment: newReviewComment.trim(),
+        },
+        ...prev,
+      ]);
+      setNewReviewAuthor('');
+      setNewReviewComment('');
+    } finally {
+      setIsSubmittingReview(false);
+    }
   };
 
   return (

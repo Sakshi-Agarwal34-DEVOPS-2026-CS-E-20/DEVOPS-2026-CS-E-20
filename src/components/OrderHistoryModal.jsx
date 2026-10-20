@@ -1,5 +1,5 @@
 import React from 'react';
-import { Package, X, Clock, CheckCircle2, ChevronRight, ShoppingBag } from 'lucide-react';
+import { Package, X, Clock, CheckCircle2, ChevronRight, ShoppingBag, Truck } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 
 export const OrderHistoryModal = () => {
@@ -8,9 +8,16 @@ export const OrderHistoryModal = () => {
     setIsOrderHistoryOpen,
     orders,
     formatPrice,
+    setIsTrackingOpen,
+    setActiveTrackingOrder,
   } = useShop();
 
   if (!isOrderHistoryOpen) return null;
+
+  const handleTrackOrder = (order) => {
+    setActiveTrackingOrder(order);
+    setIsTrackingOpen(true);
+  };
 
   return (
     <div
@@ -34,7 +41,7 @@ export const OrderHistoryModal = () => {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.75rem' }}>
           <Package size={26} color="var(--primary)" />
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Your Orders</h2>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Your Orders & Shipments</h2>
         </div>
 
         {orders.length === 0 ? (
@@ -42,7 +49,7 @@ export const OrderHistoryModal = () => {
             <Package size={48} style={{ color: 'var(--text-muted)', margin: '0 auto 1rem' }} />
             <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>No Orders Found</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-              You haven't placed any orders yet. Once you complete a purchase, it will appear here.
+              You haven't placed any orders yet. Once you complete a purchase, it will appear here with live tracking.
             </p>
             <button
               className="btn-primary"
@@ -81,8 +88,8 @@ export const OrderHistoryModal = () => {
                   <div style={{ textAlign: 'right' }}>
                     <span
                       style={{
-                        background: 'rgba(16, 185, 129, 0.15)',
-                        color: 'var(--accent-emerald)',
+                        background: order.status === 'Delivered' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(99, 102, 241, 0.15)',
+                        color: order.status === 'Delivered' ? 'var(--accent-emerald)' : 'var(--primary)',
                         padding: '0.2rem 0.6rem',
                         borderRadius: 'var(--radius-full)',
                         fontSize: '0.75rem',
@@ -102,18 +109,18 @@ export const OrderHistoryModal = () => {
                   {order.items.map((item, idx) => (
                     <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                       <img
-                        src={item.product.images[0]}
-                        alt={item.product.name}
+                        src={item.product?.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800'}
+                        alt={item.product?.name}
                         style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'cover' }}
                       />
                       <div style={{ flex: 1, fontSize: '0.88rem' }}>
-                        <div style={{ fontWeight: 600 }}>{item.product.name}</div>
+                        <div style={{ fontWeight: 600 }}>{item.product?.name}</div>
                         <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                           Qty: {item.quantity} {item.selectedColor ? `&bull; ${item.selectedColor}` : ''}
                         </div>
                       </div>
                       <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>
-                        {formatPrice(item.product.price * item.quantity)}
+                        {formatPrice((item.product?.price || 0) * item.quantity)}
                       </div>
                     </div>
                   ))}
@@ -124,14 +131,21 @@ export const OrderHistoryModal = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '0.75rem',
                     borderTop: '1px solid var(--border-subtle)',
                     paddingTop: '0.75rem',
                     fontSize: '0.9rem',
                   }}
                 >
-                  <span style={{ color: 'var(--text-muted)' }}>
-                    Est. Delivery: <strong style={{ color: 'var(--text-primary)' }}>{order.estimatedDelivery}</strong>
-                  </span>
+                  <button
+                    className="btn-secondary"
+                    onClick={() => handleTrackOrder(order)}
+                    style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                  >
+                    <Truck size={15} /> Track Package
+                  </button>
+
                   <div style={{ fontWeight: 800, fontSize: '1.1rem' }}>
                     Total: <span style={{ color: 'var(--accent-emerald)' }}>{formatPrice(order.total)}</span>
                   </div>

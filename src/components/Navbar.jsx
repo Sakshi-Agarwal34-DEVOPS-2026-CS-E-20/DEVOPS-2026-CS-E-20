@@ -9,10 +9,13 @@ import {
   X,
   Sparkles,
   Zap,
-  Check
+  Check,
+  Truck,
+  SlidersHorizontal,
+  Activity,
 } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
-import { CURRENCIES, PRODUCTS } from '../data/products';
+import { CURRENCIES } from '../data/products';
 
 export const Navbar = () => {
   const {
@@ -23,9 +26,13 @@ export const Navbar = () => {
     totalCartCount,
     wishlist,
     orders,
+    products,
     setIsCartOpen,
     setIsWishlistOpen,
     setIsOrderHistoryOpen,
+    setIsAdminOpen,
+    setIsTrackingOpen,
+    serverConnected,
     searchQuery,
     setSearchQuery,
     setQuickViewProduct,
@@ -47,10 +54,11 @@ export const Navbar = () => {
   }, []);
 
   const searchSuggestions = searchQuery.trim()
-    ? PRODUCTS.filter((p) =>
+    ? (products || []).filter((p) =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.categoryName.toLowerCase().includes(searchQuery.toLowerCase())
-      ).slice(0, 5)
+        p.categoryName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.tagline?.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 6)
     : [];
 
   return (
@@ -122,6 +130,39 @@ export const Navbar = () => {
 
         {/* Actions Group */}
         <div className="nav-actions">
+          {/* Live Order Tracking Trigger */}
+          <button
+            className="nav-icon-btn"
+            onClick={() => setIsTrackingOpen(true)}
+            title="Track Package Shipment"
+            aria-label="Track Shipment"
+          >
+            <Truck size={18} />
+          </button>
+
+          {/* Admin Operations Hub */}
+          <button
+            className="nav-icon-btn"
+            onClick={() => setIsAdminOpen(true)}
+            title="Store Operations & Admin Hub"
+            aria-label="Open Store Admin Hub"
+            style={{ position: 'relative' }}
+          >
+            <SlidersHorizontal size={18} />
+            <span
+              style={{
+                position: 'absolute',
+                bottom: '4px',
+                right: '4px',
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: serverConnected ? 'var(--accent-emerald)' : '#f59e0b',
+                boxShadow: serverConnected ? '0 0 6px var(--accent-emerald)' : 'none',
+              }}
+            />
+          </button>
+
           {/* Currency Switcher */}
           <select
             className="currency-select"

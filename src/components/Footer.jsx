@@ -3,18 +3,28 @@ import { Zap, Send, ShieldCheck, Lock, Heart } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 
 export const Footer = () => {
-  const { setSelectedCategory, addToast } = useShop();
+  const {
+    setSelectedCategory,
+    addToast,
+    subscribeNewsletter,
+    setIsTrackingOpen,
+    setIsAdminOpen,
+  } = useShop();
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [rewardCoupon, setRewardCoupon] = useState('WELCOME15');
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email.trim() || !email.includes('@')) {
       addToast('Please provide a valid email address', 'error');
       return;
     }
-    setIsSubscribed(true);
-    addToast('Subscribed! Check your inbox for 15% off code.', 'success');
+    const res = await subscribeNewsletter(email.trim());
+    if (res.success) {
+      setIsSubscribed(true);
+      if (res.coupon) setRewardCoupon(res.coupon);
+    }
   };
 
   const handleCategoryNav = (cat) => {
@@ -75,12 +85,20 @@ export const Footer = () => {
 
           {/* Customer Care */}
           <div>
-            <h4 className="footer-heading">Customer Care</h4>
+            <h4 className="footer-heading">Quick Services</h4>
             <ul className="footer-links">
-              <li><a href="#shipping" className="footer-link" onClick={(e) => e.preventDefault()}>Shipping & Express Delivery</a></li>
-              <li><a href="#returns" className="footer-link" onClick={(e) => e.preventDefault()}>Returns & Exchanges</a></li>
-              <li><a href="#warranty" className="footer-link" onClick={(e) => e.preventDefault()}>2-Year Warranty Portal</a></li>
-              <li><a href="#contact" className="footer-link" onClick={(e) => e.preventDefault()}>24/7 Concierge Support</a></li>
+              <li>
+                <button className="footer-link" onClick={() => setIsTrackingOpen(true)}>
+                  📦 Live Shipment Tracking
+                </button>
+              </li>
+              <li>
+                <button className="footer-link" onClick={() => setIsAdminOpen(true)}>
+                  ⚙️ Store Operations & Admin
+                </button>
+              </li>
+              <li><a href="#shipping" className="footer-link" onClick={(e) => { e.preventDefault(); addToast('Orders ship worldwide within 24-48 hours with FedEx Express Priority', 'info'); }}>Shipping & Delivery Info</a></li>
+              <li><a href="#warranty" className="footer-link" onClick={(e) => { e.preventDefault(); addToast('All products include our 2-Year Comprehensive Warranty', 'info'); }}>2-Year Warranty Portal</a></li>
             </ul>
           </div>
 
@@ -93,7 +111,7 @@ export const Footer = () => {
 
             {isSubscribed ? (
               <div style={{ background: 'rgba(16, 185, 129, 0.15)', color: 'var(--accent-emerald)', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.88rem', fontWeight: 600 }}>
-                ✓ You are on the VIP access list!
+                ✓ You are on the VIP access list! Use promo code <strong>{rewardCoupon}</strong> at checkout.
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="footer-newsletter-form">
