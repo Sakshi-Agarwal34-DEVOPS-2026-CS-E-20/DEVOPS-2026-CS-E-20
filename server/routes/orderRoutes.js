@@ -192,4 +192,14 @@ router.patch('/:orderId/status', (req, res) => {
     orders[orderIndex] = currentOrder;
     writeData(ORDERS_FILE, orders);
 
-  
+     res.json({
+      success: true,
+      message: `Order status updated to ${status}`,
+      order: currentOrder,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error updating order status' });
+  }
+});
+
+export default router;
