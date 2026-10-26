@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-
+RUN npm run build
 
 # Stage 2: Run Express backend & serve compiled frontend
 FROM node:22-alpine
