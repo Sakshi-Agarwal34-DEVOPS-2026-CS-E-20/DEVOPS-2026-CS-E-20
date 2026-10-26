@@ -29,4 +29,10 @@ export function readData(filename, defaultData = []) {
 export function writeData(filename, data) {
   try {
     const filePath = path.join(DATA_DIR, filename);
-  
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    return true;
+  } catch (error) {
+    console.error(`Error writing ${filename}:`, error);
+    return false;
+  }
+}  
