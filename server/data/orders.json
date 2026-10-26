@@ -312,5 +312,20 @@
       "postalCode": "94107",
       "country": "United States"
     },
-
+    "paymentMethod": "Credit Card (•••• 4242)",
+    "status": "In Transit",
+    "estimatedDelivery": "Oct 02, 2026",
+    "carrier": "FedEx Express Priority",
+    "trackingSteps": [
+      {
+        "status": "Order Placed",
+        "time": "Sep 28, 2026, 04:30 PM",
+        "completed": true
+      },
+      {
+        "status": "Processing & Packaging",
+        "time": "Sep 28, 2026, 06:15 PM",
+        "completed": true
+      },
+      {
        
