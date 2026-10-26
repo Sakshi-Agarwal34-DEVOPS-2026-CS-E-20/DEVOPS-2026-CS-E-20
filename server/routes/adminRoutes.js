@@ -1,14 +1,43 @@
 import express from 'express';
 import { readData } from '../data/db.js';
+import { isMongoConnected } from '../config/db.js';
+import Product from '../models/Product.js';
+import Order from '../models/Order.js';
+import Subscriber from '../models/Subscriber.js';
 
 const router = express.Router();
 
+// Optional Admin API security middleware
+const adminAuth = (req, res, next) => {
+  const adminKey = process.env.ADMIN_KEY;
+  if (!adminKey) {
+    return next();
+  }
+  const provided = req.headers['x-admin-key'] || req.query.adminKey;
+  if (provided === adminKey) {
+    return next();
+  }
+  return res.status(401).json({ success: false, message: 'Unauthorized: Invalid Admin Key' });
+};
+
 // GET live dashboard overview stats
-router.get('/stats', (req, res) => {
+router.get('/stats', adminAuth, async (req, res) => {
   try {
-    const products = readData('products.json', []);
-    const orders = readData('orders.json', []);
-    const subscribers = readData('subscribers.json', []);
+    let products = [];
+    let orders = [];
+    let subscribers = [];
+
+    if (isMongoConnected()) {
+      [products, orders, subscribers] = await Promise.all([
+        Product.find().lean(),
+        Order.find().sort({ createdAt: -1 }).lean(),
+        Subscriber.find().lean(),
+      ]);
+    } else {
+      products = readData('products.json', []);
+      orders = readData('orders.json', []);
+      subscribers = readData('subscribers.json', []);
+    }
 
     const totalOrders = orders.length;
     const totalRevenue = orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
@@ -38,6 +67,7 @@ router.get('/stats', (req, res) => {
 
     res.json({
       success: true,
+      source: isMongoConnected() ? 'mongodb' : 'json-store',
       stats: {
         totalRevenue: Number(totalRevenue.toFixed(2)),
         totalOrders,

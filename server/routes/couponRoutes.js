@@ -1,22 +1,29 @@
 import express from 'express';
 import { readData } from '../data/db.js';
+import { isMongoConnected } from '../config/db.js';
+import Coupon from '../models/Coupon.js';
 
 const router = express.Router();
 const COUPONS_FILE = 'coupons.json';
 
 // GET all active coupons
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
+    if (isMongoConnected()) {
+      const activeCoupons = await Coupon.find({ active: { $ne: false } }).lean();
+      return res.json({ success: true, coupons: activeCoupons, source: 'mongodb' });
+    }
+
     const coupons = readData(COUPONS_FILE, {});
     const activeCoupons = Object.values(coupons).filter((c) => c.active !== false);
-    res.json({ success: true, coupons: activeCoupons });
+    res.json({ success: true, coupons: activeCoupons, source: 'json-store' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error retrieving coupons' });
   }
 });
 
 // POST validate coupon code
-router.post('/validate', (req, res) => {
+router.post('/validate', async (req, res) => {
   try {
     const { code, subtotal = 0 } = req.body;
     if (!code || !code.trim()) {
@@ -24,10 +31,20 @@ router.post('/validate', (req, res) => {
     }
 
     const cleanCode = code.trim().toUpperCase();
-    const coupons = readData(COUPONS_FILE, {});
-    const coupon = coupons[cleanCode];
 
-    if (!coupon || coupon.active === false) {
+    let coupon = null;
+
+    if (isMongoConnected()) {
+      coupon = await Coupon.findOne({ code: cleanCode, active: { $ne: false } }).lean();
+    } else {
+      const coupons = readData(COUPONS_FILE, {});
+      const found = coupons[cleanCode];
+      if (found && found.active !== false) {
+        coupon = found;
+      }
+    }
+
+    if (!coupon) {
       return res.status(404).json({ success: false, message: `Coupon code "${code}" is invalid or expired` });
     }
 
@@ -52,6 +69,7 @@ router.post('/validate', (req, res) => {
       coupon,
       discountAmount: Number(discountAmount.toFixed(2)),
       message: `Coupon "${cleanCode}" applied successfully!`,
+      source: isMongoConnected() ? 'mongodb' : 'json-store',
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error validating coupon' });

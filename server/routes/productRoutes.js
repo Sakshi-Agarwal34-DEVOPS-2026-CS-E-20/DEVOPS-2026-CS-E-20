@@ -1,20 +1,78 @@
 import express from 'express';
 import { readData, writeData } from '../data/db.js';
+import { isMongoConnected } from '../config/db.js';
+import Product from '../models/Product.js';
 
 const router = express.Router();
 const PRODUCTS_FILE = 'products.json';
 
 // GET all products with optional filters, search, and sorting
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    let products = readData(PRODUCTS_FILE, []);
     const { category, search, minPrice, maxPrice, minRating, inStock, sortBy } = req.query;
+
+    if (isMongoConnected()) {
+      const query = {};
+
+      if (search && search.trim()) {
+        const regex = new RegExp(search.trim(), 'i');
+        query.$or = [
+          { name: regex },
+          { categoryName: regex },
+          { tagline: regex },
+          { description: regex },
+        ];
+      }
+
+      if (category && category !== 'all') {
+        query.category = category;
+      }
+
+      if (minPrice !== undefined && !isNaN(Number(minPrice))) {
+        query.price = { ...query.price, $gte: Number(minPrice) };
+      }
+
+      if (maxPrice !== undefined && !isNaN(Number(maxPrice))) {
+        query.price = { ...query.price, $lte: Number(maxPrice) };
+      }
+
+      if (minRating !== undefined && !isNaN(Number(minRating))) {
+        query.rating = { $gte: Number(minRating) };
+      }
+
+      if (inStock === 'true') {
+        query.inStock = true;
+        query.stockCount = { $gt: 0 };
+      }
+
+      let sortOption = {};
+      if (sortBy === 'price-low') {
+        sortOption = { price: 1 };
+      } else if (sortBy === 'price-high') {
+        sortOption = { price: -1 };
+      } else if (sortBy === 'rating') {
+        sortOption = { rating: -1 };
+      } else if (sortBy === 'newest') {
+        sortOption = { createdAt: -1 };
+      }
+
+      const products = await Product.find(query).sort(sortOption).lean();
+      return res.json({
+        success: true,
+        count: products.length,
+        products,
+        source: 'mongodb',
+      });
+    }
+
+    // JSON file fallback mode
+    let products = readData(PRODUCTS_FILE, []);
 
     if (search && search.trim()) {
       const q = search.trim().toLowerCase();
       products = products.filter(
         (p) =>
-          p.name.toLowerCase().includes(q) ||
+          p.name?.toLowerCase().includes(q) ||
           p.categoryName?.toLowerCase().includes(q) ||
           p.tagline?.toLowerCase().includes(q) ||
           p.description?.toLowerCase().includes(q)
@@ -61,6 +119,7 @@ router.get('/', (req, res) => {
       success: true,
       count: products.length,
       products,
+      source: 'json-store',
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -69,8 +128,28 @@ router.get('/', (req, res) => {
 });
 
 // GET categories with live counts
-router.get('/categories', (req, res) => {
+router.get('/categories', async (req, res) => {
   try {
+    if (isMongoConnected()) {
+      const [allCount, audioCount, apparelCount, livingCount, accessoriesCount] = await Promise.all([
+        Product.countDocuments(),
+        Product.countDocuments({ category: 'audio-tech' }),
+        Product.countDocuments({ category: 'apparel' }),
+        Product.countDocuments({ category: 'smart-living' }),
+        Product.countDocuments({ category: 'accessories' }),
+      ]);
+
+      const categories = [
+        { id: 'all', name: 'All Products', icon: 'Sparkles', count: allCount },
+        { id: 'audio-tech', name: 'Audio & Tech', icon: 'Headphones', count: audioCount },
+        { id: 'apparel', name: 'Urban Apparel', icon: 'Shirt', count: apparelCount },
+        { id: 'smart-living', name: 'Smart Living', icon: 'Home', count: livingCount },
+        { id: 'accessories', name: 'Accessories', icon: 'Watch', count: accessoriesCount },
+      ];
+
+      return res.json({ success: true, categories, source: 'mongodb' });
+    }
+
     const products = readData(PRODUCTS_FILE, []);
     const categories = [
       { id: 'all', name: 'All Products', icon: 'Sparkles', count: products.length },
@@ -80,15 +159,23 @@ router.get('/categories', (req, res) => {
       { id: 'accessories', name: 'Accessories', icon: 'Watch', count: products.filter(p => p.category === 'accessories').length },
     ];
 
-    res.json({ success: true, categories });
+    res.json({ success: true, categories, source: 'json-store' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error retrieving categories' });
   }
 });
 
 // GET product by ID
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
+    if (isMongoConnected()) {
+      const product = await Product.findOne({ id: req.params.id }).lean();
+      if (!product) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+      return res.json({ success: true, product, source: 'mongodb' });
+    }
+
     const products = readData(PRODUCTS_FILE, []);
     const product = products.find((p) => p.id === req.params.id);
 
@@ -96,18 +183,53 @@ router.get('/:id', (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    res.json({ success: true, product });
+    res.json({ success: true, product, source: 'json-store' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error retrieving product' });
   }
 });
 
 // POST review to product
-router.post('/:id/reviews', (req, res) => {
+router.post('/:id/reviews', async (req, res) => {
   try {
     const { author, rating, comment } = req.body;
     if (!author || !rating || !comment) {
       return res.status(400).json({ success: false, message: 'Author, rating, and comment are required' });
+    }
+
+    const newReview = {
+      id: `rev-${Date.now()}`,
+      author: String(author).trim(),
+      rating: Math.max(1, Math.min(5, Number(rating))),
+      date: 'Just now',
+      comment: String(comment).trim(),
+      createdAt: new Date().toISOString(),
+    };
+
+    if (isMongoConnected()) {
+      const product = await Product.findOne({ id: req.params.id });
+      if (!product) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+
+      if (!product.reviews) {
+        product.reviews = [];
+      }
+
+      product.reviews.unshift(newReview);
+      product.reviewCount = product.reviews.length;
+      const totalRatingSum = product.reviews.reduce((sum, r) => sum + r.rating, 0);
+      product.rating = Number((totalRatingSum / product.reviews.length).toFixed(1));
+
+      await product.save();
+
+      return res.status(201).json({
+        success: true,
+        message: 'Review submitted successfully',
+        review: newReview,
+        product,
+        source: 'mongodb',
+      });
     }
 
     const products = readData(PRODUCTS_FILE, []);
@@ -118,15 +240,6 @@ router.post('/:id/reviews', (req, res) => {
     }
 
     const targetProduct = products[productIndex];
-    const newReview = {
-      id: `rev-${Date.now()}`,
-      author: String(author).trim(),
-      rating: Math.max(1, Math.min(5, Number(rating))),
-      date: 'Just now',
-      comment: String(comment).trim(),
-      createdAt: new Date().toISOString(),
-    };
-
     if (!targetProduct.reviews) {
       targetProduct.reviews = [];
     }
@@ -134,7 +247,6 @@ router.post('/:id/reviews', (req, res) => {
     targetProduct.reviews.unshift(newReview);
     targetProduct.reviewCount = targetProduct.reviews.length;
 
-    // Recalculate average rating
     const totalRatingSum = targetProduct.reviews.reduce((sum, r) => sum + r.rating, 0);
     targetProduct.rating = Number((totalRatingSum / targetProduct.reviews.length).toFixed(1));
 
@@ -146,6 +258,7 @@ router.post('/:id/reviews', (req, res) => {
       message: 'Review submitted successfully',
       review: newReview,
       product: targetProduct,
+      source: 'json-store',
     });
   } catch (error) {
     console.error('Error posting review:', error);
@@ -154,9 +267,8 @@ router.post('/:id/reviews', (req, res) => {
 });
 
 // POST create new product (Admin)
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const products = readData(PRODUCTS_FILE, []);
     const { name, tagline, category, categoryName, price, originalPrice, inStock, stockCount, images, description, colors, sizes, specs } = req.body;
 
     if (!name || !price || !category) {
@@ -187,6 +299,17 @@ router.post('/', (req, res) => {
       reviews: [],
     };
 
+    if (isMongoConnected()) {
+      const created = await Product.create(newProduct);
+      return res.status(201).json({
+        success: true,
+        message: 'Product created successfully',
+        product: created,
+        source: 'mongodb',
+      });
+    }
+
+    const products = readData(PRODUCTS_FILE, []);
     products.unshift(newProduct);
     writeData(PRODUCTS_FILE, products);
 
@@ -194,6 +317,7 @@ router.post('/', (req, res) => {
       success: true,
       message: 'Product created successfully',
       product: newProduct,
+      source: 'json-store',
     });
   } catch (error) {
     console.error('Error creating product:', error);
@@ -202,8 +326,38 @@ router.post('/', (req, res) => {
 });
 
 // PUT update product (Admin)
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
+    const updateData = {
+      ...req.body,
+    };
+    if (req.body.price !== undefined) updateData.price = Number(req.body.price);
+    if (req.body.stockCount !== undefined) {
+      updateData.stockCount = Number(req.body.stockCount);
+      updateData.inStock = Number(req.body.stockCount) > 0;
+    } else if (req.body.inStock !== undefined) {
+      updateData.inStock = Boolean(req.body.inStock);
+    }
+
+    if (isMongoConnected()) {
+      const updated = await Product.findOneAndUpdate(
+        { id: req.params.id },
+        { $set: updateData },
+        { new: true }
+      );
+
+      if (!updated) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+
+      return res.json({
+        success: true,
+        message: 'Product updated successfully',
+        product: updated,
+        source: 'mongodb',
+      });
+    }
+
     const products = readData(PRODUCTS_FILE, []);
     const productIndex = products.findIndex((p) => p.id === req.params.id);
 
@@ -214,10 +368,7 @@ router.put('/:id', (req, res) => {
     const current = products[productIndex];
     const updated = {
       ...current,
-      ...req.body,
-      price: req.body.price !== undefined ? Number(req.body.price) : current.price,
-      stockCount: req.body.stockCount !== undefined ? Number(req.body.stockCount) : current.stockCount,
-      inStock: req.body.stockCount !== undefined ? Number(req.body.stockCount) > 0 : (req.body.inStock !== undefined ? Boolean(req.body.inStock) : current.inStock),
+      ...updateData,
     };
 
     products[productIndex] = updated;
@@ -227,6 +378,7 @@ router.put('/:id', (req, res) => {
       success: true,
       message: 'Product updated successfully',
       product: updated,
+      source: 'json-store',
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error updating product' });
@@ -234,8 +386,16 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE product (Admin)
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
+    if (isMongoConnected()) {
+      const deleted = await Product.findOneAndDelete({ id: req.params.id });
+      if (!deleted) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+      return res.json({ success: true, message: 'Product deleted successfully', source: 'mongodb' });
+    }
+
     let products = readData(PRODUCTS_FILE, []);
     const exists = products.some((p) => p.id === req.params.id);
 
@@ -246,7 +406,7 @@ router.delete('/:id', (req, res) => {
     products = products.filter((p) => p.id !== req.params.id);
     writeData(PRODUCTS_FILE, products);
 
-    res.json({ success: true, message: 'Product deleted successfully' });
+    res.json({ success: true, message: 'Product deleted successfully', source: 'json-store' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error deleting product' });
   }
