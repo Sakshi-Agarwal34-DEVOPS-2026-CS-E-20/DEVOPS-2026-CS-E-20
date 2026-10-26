@@ -23,10 +23,3 @@ router.get('/', (req, res) => {
         ordersCount: orders.length,
         activeCouponsCount: Object.keys(coupons).length,
       },
-    });
-  } catch (error) {
-    res.status(500).json({ status: 'unhealthy', error: error.message });
-  }
-});
-
-export default router;
