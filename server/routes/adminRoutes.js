@@ -52,4 +52,11 @@ router.get('/stats', (req, res) => {
         lowStockProducts: lowStockProducts.slice(0, 6),
       },
     });
-  } 
+  } catch (error) {
+    console.error('Error computing admin stats:', error);
+    res.status(500).json({ success: false, message: 'Error computing analytics metrics' });
+  }
+});
+
+export default router;
+
