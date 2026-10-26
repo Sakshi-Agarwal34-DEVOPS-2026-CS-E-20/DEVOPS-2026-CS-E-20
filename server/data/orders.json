@@ -1,0 +1,353 @@
+[
+  {
+    "orderId": "ORD-LUX-MUMDPWM5-9234",
+    "trackingNumber": "TRK-790156699",
+    "date": "Sep 29, 2026, 01:22 PM",
+    "items": [
+      {
+        "itemKey": "prod-1-Matte Obsidian-default",
+        "product": {
+          "id": "prod-1",
+          "name": "Aura Studio Wireless ANC Headphones",
+          "tagline": "Immersive Spatial Audio with 45h Battery Life",
+          "category": "audio-tech",
+          "categoryName": "Audio & Tech",
+          "price": 249.99,
+          "originalPrice": 329.99,
+          "discount": 24,
+          "rating": 5,
+          "reviewCount": 3,
+          "badge": "Best Seller",
+          "badgeType": "hot",
+          "inStock": true,
+          "stockCount": 16,
+          "images": [
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&auto=format&fit=crop&q=80"
+          ],
+          "colors": [
+            {
+              "name": "Matte Obsidian",
+              "hex": "#1e1e1e"
+            },
+            {
+              "name": "Titanium Silver",
+              "hex": "#d4d4d8"
+            },
+            {
+              "name": "Midnight Navy",
+              "hex": "#1e293b"
+            }
+          ],
+          "sizes": [],
+          "description": "Engineered for audio purists and daily commuters alike. Features hybrid active noise cancellation, custom 40mm beryllium drivers, and ultra-plush memory foam earcups.",
+          "specs": {
+            "Driver Size": "40mm Titanium Plated",
+            "Battery Life": "Up to 45 hours (ANC on)",
+            "Connectivity": "Bluetooth 5.3 + 3.5mm AUX",
+            "Weight": "255 grams",
+            "Charging": "USB-C Fast Charging (10m = 5h play)"
+          },
+          "reviews": [
+            {
+              "id": "rev-1790667861444",
+              "author": "Julian Vance",
+              "rating": 5,
+              "date": "Just now",
+              "comment": "Superb acoustic tuning and comfort.",
+              "createdAt": "2026-09-29T07:44:21.444Z"
+            },
+            {
+              "id": "rev-1",
+              "author": "Elena Vance",
+              "rating": 5,
+              "date": "2 days ago",
+              "comment": "The soundstage is astonishingly wide. Noise cancellation rivals high-end studio models!"
+            },
+            {
+              "id": "rev-2",
+              "author": "Marcus Chen",
+              "rating": 5,
+              "date": "1 week ago",
+              "comment": "Super comfortable for all-day coding sessions. Battery really does last the entire week."
+            }
+          ]
+        },
+        "quantity": 1,
+        "selectedColor": "Matte Obsidian",
+        "selectedSize": null
+      },
+      {
+        "itemKey": "prod-2-Cyber Neon-Linear Red",
+        "product": {
+          "id": "prod-2",
+          "name": "CyberGlow Mechanical Keyboard 75%",
+          "tagline": "Gasket-Mounted RGB Hotswappable Keyboard",
+          "category": "audio-tech",
+          "categoryName": "Audio & Tech",
+          "price": 139.99,
+          "originalPrice": 179.99,
+          "discount": 22,
+          "rating": 4.8,
+          "reviewCount": 98,
+          "badge": "Popular",
+          "badgeType": "trending",
+          "inStock": true,
+          "stockCount": 12,
+          "images": [
+            "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&auto=format&fit=crop&q=80"
+          ],
+          "colors": [
+            {
+              "name": "Cyber Neon",
+              "hex": "#6366f1"
+            },
+            {
+              "name": "Stealth Black",
+              "hex": "#111827"
+            },
+            {
+              "name": "Retro Cream",
+              "hex": "#fef3c7"
+            }
+          ],
+          "sizes": [
+            "Linear Red",
+            "Tactile Brown",
+            "Clicky Blue"
+          ],
+          "description": "Precision typing experience tailored for enthusiasts. Multi-layer acoustic dampening, custom pre-lubed switches, and per-key customizable South-facing RGB backlighting.",
+          "specs": {
+            "Layout": "75% Compact (84 keys)",
+            "Switches": "Pre-lubricated Gateron Pro",
+            "Battery": "4000mAh wireless rechargeable",
+            "Connectivity": "Tri-mode (2.4G / BT 5.1 / Type-C)",
+            "Keycaps": "Double-shot PBT Cherry Profile"
+          },
+          "reviews": [
+            {
+              "id": "rev-3",
+              "author": "Devon K.",
+              "rating": 5,
+              "date": "3 days ago",
+              "comment": "The typing sound profile is deep and creamy right out of the box!"
+            }
+          ]
+        },
+        "quantity": 1,
+        "selectedColor": "Cyber Neon",
+        "selectedSize": "Linear Red"
+      }
+    ],
+    "subtotal": 389.98,
+    "discount": 0,
+    "shipping": 0,
+    "tax": 31.198400000000003,
+    "total": 421.1784,
+    "currency": "USD",
+    "customer": {
+      "firstName": "Seema",
+      "lastName": "Agarwal",
+      "email": "agarwalseema61912@gmail.com",
+      "address": "skit",
+      "city": "jaipur",
+      "postalCode": "302017",
+      "country": "United States"
+    },
+    "paymentMethod": "Credit Card",
+    "appliedCoupon": null,
+    "status": "Processing",
+    "carrier": "FedEx Express Priority",
+    "estimatedDelivery": "Oct 3, 2026",
+    "trackingSteps": [
+      {
+        "status": "Order Placed",
+        "time": "Sep 29, 2026, 01:22 PM",
+        "completed": true,
+        "current": false
+      },
+      {
+        "status": "Processing & Packaging",
+        "time": "In Progress / Completed",
+        "completed": true,
+        "current": true
+      },
+      {
+        "status": "Shipped from Fulfillment Hub",
+        "time": "Pending",
+        "completed": false,
+        "current": false
+      },
+      {
+        "status": "In Transit",
+        "time": "Pending",
+        "completed": false,
+        "current": false
+      },
+      {
+        "status": "Out for Delivery",
+        "time": "Pending",
+        "completed": false,
+        "current": false
+      },
+      {
+        "status": "Delivered",
+        "time": "Pending",
+        "completed": false,
+        "current": false
+      }
+    ],
+    "createdAt": "2026-09-29T07:52:59.715Z"
+  },
+  {
+    "orderId": "ORD-LUX-MUMDFWKY-6662",
+    "trackingNumber": "TRK-639457617",
+    "date": "Sep 29, 2026, 01:15 PM",
+    "items": [
+      {
+        "quantity": 2,
+        "product": {
+          "price": 249.99,
+          "name": "Aura Studio Wireless ANC Headphones",
+          "id": "prod-1"
+        }
+      }
+    ],
+    "subtotal": 499.98,
+    "discount": 99.99,
+    "shipping": 0,
+    "tax": 32,
+    "total": 431.99,
+    "currency": "USD",
+    "customer": {
+      "city": "Los Angeles, CA",
+      "country": "United States",
+      "lastName": "Rostova",
+      "postalCode": "90001",
+      "email": "elena.rostova@example.com",
+      "firstName": "Elena",
+      "address": "100 Sunset Blvd"
+    },
+    "paymentMethod": "Credit Card (.... 4242)",
+    "appliedCoupon": null,
+    "status": "Shipped",
+    "carrier": "FedEx Express Priority",
+    "estimatedDelivery": "Oct 3, 2026",
+    "trackingSteps": [
+      {
+        "status": "Order Placed",
+        "time": "Sep 29, 2026, 01:15 PM",
+        "completed": true,
+        "current": false
+      },
+      {
+        "status": "Processing & Packaging",
+        "time": "In Progress / Completed",
+        "completed": true,
+        "current": false
+      },
+      {
+        "status": "Shipped from Fulfillment Hub",
+        "time": "In Progress / Completed",
+        "completed": true,
+        "current": true
+      },
+      {
+        "status": "In Transit",
+        "time": "Pending",
+        "completed": false,
+        "current": false
+      },
+      {
+        "status": "Out for Delivery",
+        "time": "Pending",
+        "completed": false,
+        "current": false
+      },
+      {
+        "status": "Delivered",
+        "time": "Pending",
+        "completed": false,
+        "current": false
+      }
+    ],
+    "createdAt": "2026-09-29T07:45:13.120Z",
+    "updatedAt": "2026-09-29T07:45:49.567Z"
+  },
+  {
+    "orderId": "ORD-LUX-8921",
+    "trackingNumber": "TRK-984210984",
+    "date": "Sep 28, 2026, 04:30 PM",
+    "items": [
+      {
+        "itemKey": "prod-1-Matte Obsidian-default",
+        "product": {
+          "id": "prod-1",
+          "name": "Aura Studio Wireless ANC Headphones",
+          "price": 249.99,
+          "images": [
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80"
+          ]
+        },
+        "quantity": 1,
+        "selectedColor": "Matte Obsidian",
+        "selectedSize": null
+      }
+    ],
+    "subtotal": 249.99,
+    "discount": 50,
+    "shipping": 0,
+    "tax": 16,
+    "total": 215.99,
+    "currency": "USD",
+    "customer": {
+      "firstName": "Alexander",
+      "lastName": "Morgan",
+      "email": "alex.morgan@example.com",
+      "address": "742 Evergreen Terrace",
+      "city": "San Francisco, CA",
+      "postalCode": "94107",
+      "country": "United States"
+    },
+    "paymentMethod": "Credit Card (•••• 4242)",
+    "status": "In Transit",
+    "estimatedDelivery": "Oct 02, 2026",
+    "carrier": "FedEx Express Priority",
+    "trackingSteps": [
+      {
+        "status": "Order Placed",
+        "time": "Sep 28, 2026, 04:30 PM",
+        "completed": true
+      },
+      {
+        "status": "Processing & Packaging",
+        "time": "Sep 28, 2026, 06:15 PM",
+        "completed": true
+      },
+      {
+        "status": "Shipped from Fulfillment Hub",
+        "time": "Sep 29, 2026, 09:00 AM",
+        "completed": true
+      },
+      {
+        "status": "In Transit",
+        "time": "Sep 29, 2026, 12:45 PM",
+        "completed": true,
+        "current": true
+      },
+      {
+        "status": "Out for Delivery",
+        "time": "Pending",
+        "completed": false
+      },
+      {
+        "status": "Delivered",
+        "time": "Pending",
+        "completed": false
+      }
+    ]
+  }
+]
