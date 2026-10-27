@@ -31,13 +31,4 @@ export async function connectDB() {
     console.log('ℹ️ [DATABASE] Falling back gracefully to JSON file storage mode.');
   }
 
-  mongoose.connection.on('disconnected', () => {
-    isConnected = false;
-    console.warn('⚠️ [DATABASE] MongoDB disconnected. Using fallback storage.');
-  });
-
-  mongoose.connection.on('reconnected', () => {
-    isConnected = true;
-    console.log('✅ [DATABASE] MongoDB reconnected.');
-  });
-}
+ 
