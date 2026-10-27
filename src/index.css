@@ -1758,21 +1758,4 @@ input, select, textarea {
     text-align: center;
   }
 
-  .checkout-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .form-group-full {
-    grid-column: span 1;
-  }
-}
-
-@media (max-width: 480px) {
-  .value-props-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-}
+  
