@@ -75,22 +75,3 @@ app.use((req, res, next) => {
   });
 });
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-  console.error('Unhandled server error:', err);
-  res.status(500).json({
-    success: false,
-    message: 'Internal server error occurred',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined,
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`\n======================================================`);
-  console.log(`🚀 LUMEN LUXE BACKEND SERVER RUNNING ON PORT ${PORT}`);
-  console.log(`📡 API Base URL: http://localhost:${PORT}/api`);
-  console.log(`🩺 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`======================================================\n`);
-});
-
-export default app;
