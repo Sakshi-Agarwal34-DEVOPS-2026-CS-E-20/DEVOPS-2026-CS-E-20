@@ -1,17 +1,1 @@
-services:
-  - type: web
-    name: lumen-luxe
-    runtime: docker
-    dockerfilePath: ./Dockerfile
-    plan: free
-    region: oregon
-    healthCheckPath: /api/health
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 5000
-      - key: MONGODB_URI
-        sync: false
-      - key: ADMIN_KEY
-        sync: false
+
