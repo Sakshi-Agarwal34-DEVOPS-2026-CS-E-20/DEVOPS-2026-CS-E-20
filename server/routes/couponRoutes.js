@@ -62,4 +62,19 @@ router.post('/validate', async (req, res) => {
       discountAmount = Math.min(coupon.discountAmount, Number(subtotal));
     }
 
-   
+    res.json({
+      success: true,
+      valid: true,
+      code: cleanCode,
+      coupon,
+      discountAmount: Number(discountAmount.toFixed(2)),
+      message: `Coupon "${cleanCode}" applied successfully!`,
+      source: isMongoConnected() ? 'mongodb' : 'json-store',
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error validating coupon' });
+  }
+});
+
+export default router;
+
