@@ -54,4 +54,18 @@ async function testMongoConnection() {
       console.log('✨ Data persistence is active and verified.');
     }
 
-   
+    console.log('\n🎉 All MongoDB tests passed successfully!');
+    await mongoose.disconnect();
+    process.exit(0);
+  } catch (error) {
+    console.error('\n❌ Connection Failed:', error.message);
+    console.log('\n🔍 Common Troubleshooting Tips:');
+    console.log('   - Check if your password contains special characters. If so, URL-encode them.');
+    console.log('   - Verify that your IP is whitelisted (0.0.0.0/0) in MongoDB Atlas Network Access.');
+    console.log('   - Ensure your database user has "readWriteAnyDatabase" or "readWrite" privileges.');
+    process.exit(1);
+  }
+}
+
+testMongoConnection();
+
