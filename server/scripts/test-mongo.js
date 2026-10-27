@@ -1,18 +1,19 @@
-import 'dotenv/config';
+import '../config/loadEnv.js';
 import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 import Order from '../models/Order.js';
 import Coupon from '../models/Coupon.js';
 import Subscriber from '../models/Subscriber.js';
+import { formatMongoUri } from '../config/db.js';
 
 async function testMongoConnection() {
-  const uri = process.env.MONGODB_URI;
+  const rawUri = process.env.MONGODB_URI;
 
   console.log('\n======================================================');
   console.log('🍃 LUMEN LUXE — MONGODB ATLAS DIAGNOSTIC & TEST TOOL');
   console.log('======================================================\n');
 
-  if (!uri) {
+  if (!rawUri) {
     console.log('❌ MONGODB_URI is not defined in your environment or .env file.');
     console.log('\n👉 Instructions to connect MongoDB Atlas:');
     console.log('   1. Create a free cluster on https://cloud.mongodb.com');
@@ -23,13 +24,15 @@ async function testMongoConnection() {
     process.exit(1);
   }
 
+  const uri = formatMongoUri(rawUri);
+
   // Hide password in logged URI for security
   const maskedUri = uri.replace(/\/\/(.*):(.*)@/, '//$1:****@');
   console.log(`🔌 Attempting connection to: ${maskedUri}`);
 
   try {
     const startTime = Date.now();
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 8000 });
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
     const latency = Date.now() - startTime;
 
     console.log(`✅ Successfully connected to MongoDB Atlas! (Latency: ${latency}ms)\n`);

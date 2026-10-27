@@ -7,19 +7,35 @@ export const isMongoConnected = () => {
   return mongoose.connection.readyState === 1;
 };
 
-export async function connectDB() {
-  const uri = process.env.MONGODB_URI;
+// Automatically encode special characters like '@' in password if not already encoded
+export function formatMongoUri(uri) {
+  if (!uri) return uri;
+  const match = uri.match(/^(mongodb(?:\+srv)?:\/\/)([^:]+):(.*)@([^@\/]+)(\/.*)?$/);
+  if (match) {
+    const [, protocol, user, pass, host, rest = ''] = match;
+    if (pass.includes('@')) {
+      const encodedPass = encodeURIComponent(decodeURIComponent(pass));
+      return `${protocol}${encodeURIComponent(decodeURIComponent(user))}:${encodedPass}@${host}${rest}`;
+    }
+  }
+  return uri;
+}
 
-  if (!uri) {
+export async function connectDB() {
+  const rawUri = process.env.MONGODB_URI;
+
+  if (!rawUri) {
     console.log('ℹ️ [DATABASE] MONGODB_URI is not set. Operating in JSON file storage mode.');
     console.log('💡 Tip: Set MONGODB_URI in your .env or hosting environment to connect to MongoDB Atlas.');
     return;
   }
 
+  const uri = formatMongoUri(rawUri);
+
   try {
     console.log('🔄 [DATABASE] Connecting to MongoDB...');
     await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 7000,
+      serverSelectionTimeoutMS: 10000,
     });
     isConnected = true;
     console.log('✅ [DATABASE] Successfully connected to MongoDB Database!');

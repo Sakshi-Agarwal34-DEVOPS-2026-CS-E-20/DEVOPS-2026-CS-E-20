@@ -1,6 +1,8 @@
 # Environment files
 .env
 .env.*
+ssakshi.env
+*.env
 !.env.example
 
 # Logs
